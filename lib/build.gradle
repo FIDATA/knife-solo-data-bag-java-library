@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 /*
- * Gradle Settings file for knife-solo-data-bag-java-library
+ * Build script for knife-solo-data-bag-java-library:lib
  * Copyright © 2019  Basil Peace
  *
  * This file is part of knife-solo-data-bag-java-library.
@@ -17,29 +17,14 @@
  * implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-pluginManagement {
-  repositories {
-    maven {
-      url 'https://fidata.jfrog.io/fidata/plugins-snapshot/'
-      credentials {
-        username = settings.ext.artifactoryUser
-        password = settings.ext.artifactoryPassword
-      }
-    }
-  }
+plugins {
+  id 'org.fidata.project.java'
+  id 'org.fidata.project.groovy'
 }
 
-rootProject.name = 'knife-solo-data-bag-java-library'
+publicReleases = true
+description = 'Dealing with Chef data bags from Java'
 
-ext.rootDir = file('.')
-
-apply from: new File(ext.rootDir, 'gradle/build-cache.gradle')
-apply from: new File(ext.rootDir, 'gradle/feature-previews.gradle')
-
-[
-  'lib',
-  'gradle-plugin',
-].each {
-  include it
-  project(":$it").projectDir = new File(ext.rootDir, it)
+dependencies {
+  implementation 'org.snakeyaml:snakeyaml-engine:[1, 2['
 }

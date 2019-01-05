@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 /*
- * Gradle Settings file for knife-solo-data-bag-java-library
+ * Build cache configuration for knife-solo-data-bag-java-library
  * Copyright © 2019  Basil Peace
  *
  * This file is part of knife-solo-data-bag-java-library.
@@ -17,29 +17,24 @@
  * implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-pluginManagement {
-  repositories {
-    maven {
-      url 'https://fidata.jfrog.io/fidata/plugins-snapshot/'
-      credentials {
-        username = settings.ext.artifactoryUser
-        password = settings.ext.artifactoryPassword
-      }
-    }
+/*
+ * WORKAROUND:
+ * Jenkins doesn't set CI environment variable
+ * https://issues.jenkins-ci.org/browse/JENKINS-36707
+ * <grv87 2018-06-27>
+ */
+ext.pushToRemoteCache = System.getenv().with { containsKey('CI') || containsKey('JENKINS_URL') }
+buildCache {
+  local {
+    enabled = !pushToRemoteCache
+    removeUnusedEntriesAfterDays = 30
   }
-}
-
-rootProject.name = 'knife-solo-data-bag-java-library'
-
-ext.rootDir = file('.')
-
-apply from: new File(ext.rootDir, 'gradle/build-cache.gradle')
-apply from: new File(ext.rootDir, 'gradle/feature-previews.gradle')
-
-[
-  'lib',
-  'gradle-plugin',
-].each {
-  include it
-  project(":$it").projectDir = new File(ext.rootDir, it)
+  remote(HttpBuildCache) {
+    url = 'https://fidata.jfrog.io/fidata/local.gradle.cache/'
+    credentials {
+      username = settings.ext.artifactoryUser
+      password = settings.ext.artifactoryPassword
+    }
+    push = pushToRemoteCache
+  }
 }

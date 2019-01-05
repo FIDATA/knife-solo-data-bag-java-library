@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 /*
- * Gradle Settings file for knife-solo-data-bag-java-library
+ * Jenkinsfile for knife-solo-data-bag-java-library
  * Copyright © 2019  Basil Peace
  *
  * This file is part of knife-solo-data-bag-java-library.
@@ -17,29 +17,16 @@
  * implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-pluginManagement {
-  repositories {
-    maven {
-      url 'https://fidata.jfrog.io/fidata/plugins-snapshot/'
-      credentials {
-        username = settings.ext.artifactoryUser
-        password = settings.ext.artifactoryPassword
-      }
-    }
-  }
-}
+//noinspection GroovyUnusedAssignment
+@SuppressWarnings(['UnusedVariable', 'NoDef', 'VariableTypeRequired'])
+@Library('jenkins-pipeline-shared-library@v2.0.0') dummy
 
-rootProject.name = 'knife-solo-data-bag-java-library'
-
-ext.rootDir = file('.')
-
-apply from: new File(ext.rootDir, 'gradle/build-cache.gradle')
-apply from: new File(ext.rootDir, 'gradle/feature-previews.gradle')
-
-[
-  'lib',
-  'gradle-plugin',
-].each {
-  include it
-  project(":$it").projectDir = new File(ext.rootDir, it)
-}
+// TODO: multi-project
+defaultJVMPipeline(
+  true,
+  [:],
+  [].toSet(),
+  true,
+  [].toSet(),
+  true
+)

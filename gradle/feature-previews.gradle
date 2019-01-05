@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 /*
- * Gradle Settings file for knife-solo-data-bag-java-library
+ * Gradle feature previews configuration for knife-solo-data-bag-java-library
  * Copyright © 2019  Basil Peace
  *
  * This file is part of knife-solo-data-bag-java-library.
@@ -17,29 +17,4 @@
  * implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-pluginManagement {
-  repositories {
-    maven {
-      url 'https://fidata.jfrog.io/fidata/plugins-snapshot/'
-      credentials {
-        username = settings.ext.artifactoryUser
-        password = settings.ext.artifactoryPassword
-      }
-    }
-  }
-}
-
-rootProject.name = 'knife-solo-data-bag-java-library'
-
-ext.rootDir = file('.')
-
-apply from: new File(ext.rootDir, 'gradle/build-cache.gradle')
-apply from: new File(ext.rootDir, 'gradle/feature-previews.gradle')
-
-[
-  'lib',
-  'gradle-plugin',
-].each {
-  include it
-  project(":$it").projectDir = new File(ext.rootDir, it)
-}
+enableFeaturePreview('STABLE_PUBLISHING')

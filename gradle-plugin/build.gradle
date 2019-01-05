@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 /*
- * Build script for knife-solo-data-bag-java-library
+ * Build script for knife-solo-data-bag-java-library:gradle-plugin
  * Copyright © 2019  Basil Peace
  *
  * This file is part of knife-solo-data-bag-java-library.
@@ -18,23 +18,39 @@
  * permissions and limitations under the License.
  */
 plugins {
-  id 'org.fidata.project' version '6.0.0-gradle-5-0-SNAPSHOT'
+  id 'org.fidata.project.java'
+  id 'org.fidata.project.groovy'
+  id 'org.fidata.plugin'
 }
 
-group 'org.fidata.chef'
-tags.set(['chef', 'knife', 'devops', 'data bag']) // TODO
-//noinspection GroovyUnusedAssignment
-license = 'Apache-2.0'
-//noinspection GroovyUnusedAssignment
 publicReleases = true
-contacts {
-  'grv87@yandex.ru' {
-    moniker 'Basil Peace'
-    github 'grv87'
-    roles 'owner', 'developer'
+description = 'Dealing with Chef data bags from Gradle'
+
+dependencies {
+  implementation project(path: ':lib')
+}
+
+gradlePlugin {
+  plugins {
+    knifeSoloDataBagPlugin {
+      id = 'org.fidata.chef.knife-solo-data-bag'
+      implementationClass = 'org.fidata.chef.gradle.KnifeSoloDataBagPlugin'
+    }
   }
 }
 
-wrapper {
-  gradleVersion = '5.1'
+stutter {
+  sparse = true
+  java(8) {
+    compatibleRange '5.1'
+  }
+  java(9) {
+    compatibleRange '5.1'
+  }
+}
+
+pluginBundle.plugins {
+  knifeSoloDataBagPlugin {
+    displayName = 'Knife Solo Data Bag'
+  }
 }
