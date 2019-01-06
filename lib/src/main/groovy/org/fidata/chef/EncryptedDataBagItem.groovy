@@ -1,5 +1,6 @@
 package org.fidata.chef
 
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
@@ -27,6 +28,7 @@ import groovy.transform.InheritConstructors
  * provides no protection of data bag items from actors with access to
  * such nodes in the infrastructure.
  */
+@CompileStatic
 class EncryptedDataBagItem {
   /**
    * Name of encryption algorithm for versions up to 2.
