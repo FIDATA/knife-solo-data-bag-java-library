@@ -6,7 +6,7 @@ import java.util.regex.Pattern
 
 @CompileStatic
 class DataBag {
-  static final Pattern VALID_NAME = ~/^[.-\p{Alnum}_]+$/
+  static final Pattern VALID_NAME = ~/^[.-\\p{Alnum}_]+$/
   static final Pattern RESERVED_NAMES = ~/^(node|role|environment|client)$/
 
   static void validateName(String name) {
