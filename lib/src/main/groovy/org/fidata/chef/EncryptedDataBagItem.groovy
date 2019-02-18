@@ -2,6 +2,7 @@ package org.fidata.chef
 
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
+import org.fidata.chef.exceptions.Exceptions
 
 /**
  * An EncryptedDataBagItem represents a read-only data bag item where
