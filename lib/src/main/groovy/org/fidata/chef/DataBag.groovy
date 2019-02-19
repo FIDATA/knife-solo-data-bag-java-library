@@ -100,30 +100,26 @@ class DataBag {
   end
 
   # Load a Data Bag by name via either the RESTful API or local data_bag_path if run in solo mode
-  def self.load(name)
-    if Chef::Config[:solo_legacy_mode]
-      paths = Array(Chef::Config[:data_bag_path])
-      data_bag = {}
-      paths.each do |path|
-        unless File.directory?(path)
-          raise Chef::Exceptions::InvalidDataBagPath, "Data bag path '#{path}' is invalid"
-        end
+  void load(name)
+    paths = Array(Chef::Config[:data_bag_path])
+    data_bag = {}
+    paths.each do |path|
+      unless File.directory?(path)
+        raise Chef::Exceptions::InvalidDataBagPath, "Data bag path '#{path}' is invalid"
+      end
 
-        Dir.glob(File.join(Chef::Util::PathHelper.escape_glob_dir(path, name.to_s), "*.json")).inject({}) do |bag, f|
-          item = Chef::JSONCompat.parse(IO.read(f))
+      Dir.glob(File.join(Chef::Util::PathHelper.escape_glob_dir(path, name.to_s), "*.json")).inject({}) do |bag, f|
+        item = Chef::JSONCompat.parse(IO.read(f))
 
-          # Check if we have multiple items with similar names (ids) and raise if their content differs
-          if data_bag.key?(item["id"]) && data_bag[item["id"]] != item
-            raise Chef::Exceptions::DuplicateDataBagItem, "Data bag '#{name}' has items with the same name '#{item["id"]}' but different content."
-          else
-            data_bag[item["id"]] = item
-          end
+        # Check if we have multiple items with similar names (ids) and raise if their content differs
+        if data_bag.key?(item["id"]) && data_bag[item["id"]] != item
+          raise Chef::Exceptions::DuplicateDataBagItem, "Data bag '#{name}' has items with the same name '#{item["id"]}' but different content."
+        else
+          data_bag[item["id"]] = item
         end
       end
-      data_bag
-    else
-      Chef::ServerAPI.new(Chef::Config[:chef_server_url]).get("data/#{name}")
     end
+    data_bag
   end
 
   def destroy
