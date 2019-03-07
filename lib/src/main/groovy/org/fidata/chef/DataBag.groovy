@@ -1,9 +1,7 @@
 package org.fidata.chef
 
 import groovy.transform.CompileStatic
-import org.fidata.chef.exceptions.Exceptions
 import org.fidata.chef.exceptions.InvalidDataBagName
-
 import java.util.regex.Pattern
 
 @CompileStatic
