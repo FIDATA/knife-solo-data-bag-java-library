@@ -5,7 +5,7 @@ TODOC
 
 
 ------------------------------------------------------------------------
-Copyright © 2019  Basil Peace
+Copyright ©  Basil Peace
 
 This file is part of knife-solo-data-bag-java-library.
 
